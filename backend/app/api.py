@@ -6,6 +6,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.staticfiles import StaticFiles
 
 from .domain.consumable import Consumable
+from .domain.task import Task
 from .household import Household
 from .schemas import (
     ConsumableCreate,
@@ -13,7 +14,9 @@ from .schemas import (
     HouseholdJoin,
     HouseholdRead,
     StatusUpdate,
+    TaskCreate,
     read_consumable,
+    read_task,
 )
 
 app = FastAPI()
@@ -69,6 +72,26 @@ def set_consumable_status(
         raise HTTPException(status_code=404, detail="consumable not found")
     household.set_status(hid, id, body.status)
     return read_consumable(household.consumable(hid, id))
+
+
+@app.post("/tasks")
+def create_task(body: TaskCreate, hid: str = Depends(household_id)):
+    task = Task(name=body.name, period=body.period, difficulty=body.difficulty)
+    household.add_task(hid, task)
+    return read_task(task)
+
+
+@app.get("/tasks")
+def list_tasks(hid: str = Depends(household_id)):
+    return [read_task(t) for t in household.tasks(hid)]
+
+
+@app.post("/tasks/{id}/done")
+def complete_task(id: str, hid: str = Depends(household_id)):
+    if household.task(hid, id) is None:
+        raise HTTPException(status_code=404, detail="task not found")
+    household.complete_task(hid, id)
+    return read_task(household.task(hid, id))
 
 
 app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
