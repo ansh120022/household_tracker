@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import random
 import re
+import secrets
 import sqlite3
 import uuid
 from contextlib import contextmanager
@@ -13,6 +13,9 @@ from .domain.enums import Difficulty, Period, Status
 from .domain.task import Task
 
 DB_PATH = Path(__file__).resolve().parents[1] / "household.db"
+
+# Lowercase letters and digits, without lookalikes like 0/o and 1/l/i.
+CODE_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789"
 
 
 @contextmanager
@@ -29,6 +32,11 @@ def _db():
 def _slug(name: str) -> str:
     name = name.strip().lower().replace(" ", "-").replace("_", "-")
     return re.sub(r"[^a-z0-9-]", "", name)
+
+
+def _code(name: str) -> str:
+    random_part = "".join(secrets.choice(CODE_ALPHABET) for _ in range(8))
+    return f"{_slug(name)}-{random_part}"
 
 
 class Household:
@@ -51,9 +59,9 @@ class Household:
             )
 
     def create_household(self, name: str) -> str:
-        code = f"{_slug(name)}-{random.randint(100, 999)}"
+        code = _code(name)
         while self.household_id(code) is not None:
-            code = f"{_slug(name)}-{random.randint(100, 999)}"
+            code = _code(name)
         with _db() as conn:
             conn.execute(
                 "INSERT INTO households (id, code) VALUES (?, ?)",
