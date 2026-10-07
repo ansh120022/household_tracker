@@ -22,11 +22,42 @@ accounts — the code is the only key, so share it only with people in your hous
 
 Free to use at https://212-192-2-109.sslip.io/ — no registration required.
 
-To use it on your phone, open it in Chrome and select "Install" from the Chrome menu. You can then open it like a regular mobile app using your app drawer or by searching for "Household" on your phone.
+## How to use
 
-No personal data requested. 
+### Get started
 
-You can also deploy the app on your own host.
+Create a household by giving it a name, or join one: open the invite link someone
+sent you, or type their code under **Join**. No personal data is asked for.
+
+To invite the people you live with, open **Settings** and tap **Share invite link**.
+Logging out forgets the household on that device; you'll need an invite link to come
+back.
+
+### To buy
+
+Shows every consumable that is coming to an end or finished.
+
+- Tick an item once you've bought it; it goes back to full and leaves the list.
+- Tap **+** to search all your consumables. Tap one to put it back on the list.
+- Type a name that isn't there yet and tap **Add "…"** to create it straight onto
+  the list. It gets the period "every 3 months"; change it in Settings if needed.
+
+### To do
+
+Shows every task that hasn't been done within its period, or has never been done.
+Tick a task to mark it done today; it comes back once its period has passed.
+
+### Settings
+
+- **Consumables:** tap **+** to add one. Tap an existing one to change its name, how
+  often you buy it, its status or its photo, or to delete it.
+- **Tasks:** tap **+** to add one with a name, how often, and a difficulty. Tasks
+  can't be edited or deleted yet.
+
+### Install on your phone
+
+Open the app in Chrome and select **Install** from the Chrome menu. You can then open
+it like a regular app from your app drawer, or by searching for "Household".
 
 ## Run locally
 
@@ -94,7 +125,8 @@ Full request and response schemas are at `/docs` while the server is running.
 
 ## Deploying
 
-Any Linux server with Python 3.10+ works. One setup that does:
+You can also deploy the app on your own host. Any Linux server with Python 3.10+
+works. One setup that does:
 
 - run uvicorn as a systemd service under its own user, listening on `127.0.0.1:8000`
   (no `--reload`);
