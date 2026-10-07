@@ -1,12 +1,13 @@
 :root {
-  --green: #0ccb6e;
-  --mint: #d3f2e2;
-  --background: #fafafa;
+  --accent: #0f6b6b;
+  --accent-light: #dcebea;
+  --on-accent: #ffffff;
+  --background: #f4efea;
   --surface: #ffffff;
-  --border: #e8e8e8;
+  --border: #e5ddd5;
   --text: #111111;
-  --text-secondary: #888888;
-  --danger: #d92d20;
+  --text-secondary: #6f6862;
+  --danger: #6a0f2c;
 }
 
 * {
@@ -26,78 +27,106 @@ body {
   color: var(--text);
 }
 
-header {
+.top {
   position: sticky;
   top: 0;
+  z-index: 1;
+  padding-bottom: 12px;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+header {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
-  background: var(--surface);
-  padding: 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 10px 12px 10px 16px;
+}
+
+header.centered {
+  justify-content: center;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
 }
 
 h1 {
   margin-right: auto;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-header a {
-  color: var(--text-secondary);
-  font-size: 22px;
-  text-decoration: none;
+header.centered h1 {
+  margin-right: 0;
 }
 
-#household {
+.icon-button {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: var(--surface);
-  padding: 12px 16px;
-  flex-wrap: wrap;
-  border-top: 1px solid var(--border);
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-#household button {
-  font: inherit;
-  padding: 6px 12px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: none;
-  border-radius: 8px;
-  background: var(--green);
-  color: var(--text);
+  border-radius: 50%;
+  background: none;
+  color: inherit;
   cursor: pointer;
 }
 
-#household #logout {
-  margin-left: auto;
-  background: var(--border);
+.icon-button:active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.icon-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+#household {
+  padding: 0 16px 12px;
+}
+
+#copy-link {
+  width: 100%;
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
 }
 
 .tabs {
-  position: sticky;
-  top: 53px;
   display: flex;
-  background: var(--surface);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin: 0 16px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .tabs button {
   flex: 1;
-  padding: 14px 0;
+  padding: 8px 0;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-radius: 9px;
   background: none;
   font: inherit;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: var(--on-accent);
   cursor: pointer;
 }
 
 .tabs button.active {
-  color: var(--text);
-  border-bottom-color: var(--green);
+  background: var(--surface);
+  color: var(--accent);
 }
 
 main {
@@ -134,7 +163,7 @@ main {
   }
   25% {
     transform: scale(1.06);
-    background: var(--mint);
+    background: var(--accent-light);
     opacity: 1;
   }
   100% {
@@ -147,7 +176,7 @@ main {
 #todo li input[type="checkbox"] {
   width: 22px;
   height: 22px;
-  accent-color: var(--green);
+  accent-color: var(--accent);
 }
 
 #library,
@@ -287,8 +316,8 @@ main {
 
 #sheet .actions .primary,
 #task-sheet .actions .primary {
-  background: var(--green);
-  color: var(--text);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 #add {
@@ -299,8 +328,8 @@ main {
   height: 56px;
   border: none;
   border-radius: 50%;
-  background: var(--green);
-  color: var(--text);
+  background: var(--accent);
+  color: var(--on-accent);
   font-size: 28px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
@@ -350,8 +379,8 @@ main {
 }
 
 .welcome section {
-  background: var(--mint);
-  border-color: var(--mint);
+  background: var(--accent-light);
+  border-color: var(--accent-light);
 }
 
 .welcome h2 {
@@ -386,10 +415,10 @@ main {
   font: inherit;
   font-weight: 600;
   padding: 12px;
-  border: 1px solid var(--green);
+  border: 1px solid var(--accent);
   border-radius: 12px;
-  background: var(--green);
-  color: var(--text);
+  background: var(--accent);
+  color: var(--on-accent);
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -398,6 +427,7 @@ main {
 .welcome .secondary,
 .welcome #copy {
   background: var(--surface);
+  color: var(--accent);
 }
 
 .welcome .or {

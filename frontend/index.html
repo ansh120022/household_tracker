@@ -7,18 +7,26 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icons/icon-192.png" />
-    <meta name="theme-color" content="#0ccb6e" />
+    <meta name="theme-color" content="#0f6b6b" />
   </head>
   <body>
-    <header>
-      <h1>Household</h1>
-      <a href="settings.html" aria-label="Settings">&#9881;</a>
-    </header>
+    <div class="top">
+      <header>
+        <img class="logo" src="icons/icon-192.png" alt="" />
+        <h1>Household</h1>
+        <a class="icon-button" href="settings.html" aria-label="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </a>
+      </header>
 
-    <nav class="tabs">
-      <button data-tab="to-buy" class="active" aria-selected="true">To buy</button>
-      <button data-tab="to-do" aria-selected="false">To do</button>
-    </nav>
+      <nav class="tabs">
+        <button data-tab="to-buy" class="active" aria-selected="true">To buy</button>
+        <button data-tab="to-do" aria-selected="false">To do</button>
+      </nav>
+    </div>
 
     <main>
       <section id="to-buy">
