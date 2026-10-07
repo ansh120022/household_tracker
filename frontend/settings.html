@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" aria-label="Back">&#8592;</a>
+      <h1>Settings</h1>
+    </header>
+
+    <nav class="tabs">
+      <button data-tab="consumables" class="active" aria-selected="true">Consumables</button>
+      <button data-tab="tasks" aria-selected="false">Tasks</button>
+    </nav>
+
+    <main>
+      <section id="consumables">
+        <ul id="library"></ul>
+      </section>
+      <section id="tasks" hidden>
+        <p>Coming soon.</p>
+      </section>
+    </main>
+
+    <button id="add" aria-label="Add consumable">+</button>
+
+    <dialog id="sheet">
+      <form method="dialog">
+        <h2 id="sheet-title">New consumable</h2>
+
+        <label>
+          Name
+          <input name="name" type="text" required />
+        </label>
+
+        <label>
+          How often
+          <select name="period">
+            <option value="weekly">weekly</option>
+            <option value="biweekly">biweekly</option>
+            <option value="monthly">monthly</option>
+          </select>
+        </label>
+
+        <label>
+          Status
+          <select name="status">
+            <option value="full">full</option>
+            <option value="coming to an end">coming to an end</option>
+            <option value="finished">finished</option>
+          </select>
+        </label>
+
+        <div class="actions">
+          <button value="cancel" formnovalidate>Cancel</button>
+          <button value="save" class="primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="settings.js"></script>
+  </body>
+</html>

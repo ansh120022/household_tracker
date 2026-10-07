@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 
 from .domain.consumable import Consumable
 from .household import Household
@@ -12,6 +15,8 @@ from .schemas import (
 
 app = FastAPI()
 household = Household()
+
+FRONTEND_DIR = Path(__file__).resolve().parents[2] / "frontend"
 
 
 @app.post("/consumables")
@@ -41,3 +46,6 @@ def set_consumable_status(id: str, body: StatusUpdate):
         raise HTTPException(status_code=404, detail="consumable not found")
     household.set_status(id, body.status)
     return read_consumable(consumable)
+
+
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
