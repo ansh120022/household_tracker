@@ -579,7 +579,18 @@
         "enum": [
           "weekly",
           "biweekly",
-          "monthly"
+          "monthly",
+          "every 2 months",
+          "every 3 months",
+          "every 4 months",
+          "every 5 months",
+          "every 6 months",
+          "every 7 months",
+          "every 8 months",
+          "every 9 months",
+          "every 10 months",
+          "every 11 months",
+          "yearly"
         ],
         "title": "Period"
       },
