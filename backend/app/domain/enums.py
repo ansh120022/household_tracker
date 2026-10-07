@@ -3,13 +3,17 @@ from enum import Enum
 
 
 class Period(Enum):
-    WEEKLY = 7
-    BIWEEKLY = 14
-    MONTHLY = 30
+    WEEKLY = "weekly"
+    BIWEEKLY = "biweekly"
+    MONTHLY = "monthly"
 
     @property
     def days(self) -> int:
-        return self.value
+        return {
+            Period.WEEKLY: 7,
+            Period.BIWEEKLY: 14,
+            Period.MONTHLY: 30,
+        }[self]
 
     @property
     def label(self) -> str:

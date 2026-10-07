@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .enums import Period, Status
-from .item import HouseholdItem
+from .householdItem import HouseholdItem
 
 
 class Consumable(HouseholdItem):

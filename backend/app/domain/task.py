@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 
 from .enums import Difficulty, Period
-from .item import HouseholdItem
+from .householdItem import HouseholdItem
 
 
 class Task(HouseholdItem):
