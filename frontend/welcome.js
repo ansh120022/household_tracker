@@ -1,6 +1,7 @@
 const createForm = document.querySelector("#create-form");
 const joinForm = document.querySelector("#join-form");
 const joinError = document.querySelector("#join-error");
+const start = document.querySelector("#start");
 const result = document.querySelector("#result");
 const codeDisplay = document.querySelector("#code-display");
 
@@ -33,6 +34,7 @@ joinForm.addEventListener("submit", async (event) => {
 function enter(code) {
   localStorage.setItem(HOUSEHOLD_KEY, code);
   codeDisplay.textContent = code;
+  start.hidden = true;
   result.hidden = false;
 }
 

@@ -6,6 +6,7 @@
   --border: #e8e8e8;
   --text: #111111;
   --text-secondary: #888888;
+  --danger: #d92d20;
 }
 
 * {
@@ -287,4 +288,130 @@ main {
   font-size: 28px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
+}
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.welcome [hidden] {
+  display: none;
+}
+
+.welcome .title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.welcome > div {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.welcome .intro {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.welcome form,
+.welcome section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.welcome section {
+  background: var(--mint);
+  border-color: var(--mint);
+}
+
+.welcome h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.welcome section p {
+  margin: 0;
+}
+
+.welcome label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.welcome input {
+  font: inherit;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.welcome button,
+.welcome .actions a {
+  font: inherit;
+  font-weight: 600;
+  padding: 12px;
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  background: var(--green);
+  color: var(--text);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.welcome .secondary,
+.welcome #copy {
+  background: var(--surface);
+}
+
+.welcome .or {
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.welcome #join-error {
+  margin: 0;
+  font-size: 14px;
+  color: var(--danger);
+}
+
+.welcome #code-display {
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 22px;
+  text-align: center;
+  user-select: all;
+}
+
+.welcome .actions {
+  display: flex;
+  gap: 8px;
+}
+
+.welcome .actions > * {
+  flex: 1;
 }

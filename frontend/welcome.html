@@ -12,36 +12,44 @@
     </header>
 
     <main class="welcome">
-      <p>
-        Create a household to start tracking, or join one with a code someone
-        shared with you.
-      </p>
+      <h2 class="title">Your home, in one list</h2>
 
-      <form id="create-form">
-        <h2>Create</h2>
-        <label>
-          Household name
-          <input name="name" type="text" placeholder="e.g. beaver family" required />
-        </label>
-        <button class="primary">Create household</button>
-      </form>
+      <div id="start">
+        <p class="intro">
+          Create a household to start tracking, or join one with a code someone
+          shared with you.
+        </p>
 
-      <form id="join-form">
-        <h2>Join</h2>
-        <label>
-          Household code
-          <input name="code" type="text" placeholder="e.g. beaver-family-800" required />
-        </label>
-        <button class="primary">Join household</button>
-        <p id="join-error" hidden>That code doesn't match any household.</p>
-      </form>
+        <form id="create-form">
+          <h2>Create</h2>
+          <label>
+            Household name
+            <input name="name" type="text" placeholder="e.g. beaver family" required />
+          </label>
+          <button class="primary">Create household</button>
+        </form>
+
+        <p class="or">or</p>
+
+        <form id="join-form">
+          <h2>Join</h2>
+          <label>
+            Household code
+            <input name="code" type="text" placeholder="e.g. beaver-family-k7m3q9xp" required />
+          </label>
+          <button class="secondary">Join household</button>
+          <p id="join-error" hidden>That code doesn't match any household.</p>
+        </form>
+      </div>
 
       <section id="result" hidden>
         <h2>You're in</h2>
         <p>Share this code with your household:</p>
         <p id="code-display"></p>
-        <button id="copy">Copy code</button>
-        <a href="index.html">Continue</a>
+        <div class="actions">
+          <button id="copy">Copy code</button>
+          <a href="index.html">Continue</a>
+        </div>
       </section>
     </main>
 
