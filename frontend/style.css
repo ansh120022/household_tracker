@@ -66,11 +66,13 @@ main {
   padding: 8px 0;
 }
 
-#list {
+#list,
+#todo {
   list-style: none;
 }
 
-#list li {
+#list li,
+#todo li {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -81,7 +83,8 @@ main {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-#list li.leaving {
+#list li.leaving,
+#todo li.leaving {
   animation: celebrate 0.45s ease forwards;
 }
 
@@ -101,23 +104,20 @@ main {
   }
 }
 
-#list li input[type="checkbox"] {
+#list li input[type="checkbox"],
+#todo li input[type="checkbox"] {
   width: 22px;
   height: 22px;
   accent-color: #fbbc04;
 }
 
-#to-do p,
-#tasks p {
-  color: #5f6368;
-  padding: 24px 16px;
-}
-
-#library {
+#library,
+#task-library {
   list-style: none;
 }
 
-#library li {
+#library li,
+#task-library li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -130,17 +130,20 @@ main {
   cursor: pointer;
 }
 
-#library .period {
+#library .period,
+#task-library .period {
   font-size: 13px;
   color: #5f6368;
 }
 
-#library .status {
+#library .status,
+#task-library .difficulty {
   font-size: 14px;
   color: #5f6368;
 }
 
-#sheet {
+#sheet,
+#task-sheet {
   width: 100%;
   max-width: 500px;
   margin: auto auto 0;
@@ -150,7 +153,8 @@ main {
   background: #fff;
 }
 
-#sheet[open] {
+#sheet[open],
+#task-sheet[open] {
   animation: slide-up 0.25s ease;
 }
 
@@ -160,23 +164,27 @@ main {
   }
 }
 
-#sheet::backdrop {
+#sheet::backdrop,
+#task-sheet::backdrop {
   background: rgba(0, 0, 0, 0.4);
 }
 
-#sheet form {
+#sheet form,
+#task-sheet form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-#sheet h2 {
+#sheet h2,
+#task-sheet h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
 }
 
-#sheet label {
+#sheet label,
+#task-sheet label {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -185,7 +193,9 @@ main {
 }
 
 #sheet input,
-#sheet select {
+#sheet select,
+#task-sheet input,
+#task-sheet select {
   font: inherit;
   padding: 10px;
   border: 1px solid #dadce0;
@@ -200,13 +210,15 @@ main {
   color: #5f6368;
 }
 
-#sheet .actions {
+#sheet .actions,
+#task-sheet .actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
 }
 
-#sheet .actions button {
+#sheet .actions button,
+#task-sheet .actions button {
   font: inherit;
   padding: 10px 16px;
   border: none;
@@ -216,7 +228,8 @@ main {
   cursor: pointer;
 }
 
-#sheet .actions .primary {
+#sheet .actions .primary,
+#task-sheet .actions .primary {
   background: #fbbc04;
   color: #202124;
 }

@@ -1,3 +1,5 @@
+requireHousehold();
+
 const tabs = document.querySelectorAll(".tabs button");
 const panels = {
   "to-buy": document.querySelector("#to-buy"),
@@ -22,7 +24,7 @@ function showTab(name) {
 const list = document.querySelector("#list");
 
 async function loadShoppingList() {
-  const response = await fetch("/consumables");
+  const response = await api("/consumables");
   const consumables = await response.json();
   const toBuy = consumables.filter((c) => c.needs_restock);
   list.replaceChildren(...toBuy.map(row));
@@ -45,7 +47,7 @@ function row(c) {
 }
 
 function check(id, li) {
-  fetch(`/consumables/${id}/status`, {
+  api(`/consumables/${id}/status`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ status: "full" }),
@@ -54,4 +56,36 @@ function check(id, li) {
   li.addEventListener("animationend", () => li.remove(), { once: true });
 }
 
+const todo = document.querySelector("#todo");
+
+async function loadTodoList() {
+  const response = await api("/tasks");
+  const tasks = await response.json();
+  const due = tasks.filter((t) => t.is_due);
+  todo.replaceChildren(...due.map(todoRow));
+}
+
+function todoRow(t) {
+  const li = document.createElement("li");
+
+  const box = document.createElement("input");
+  box.type = "checkbox";
+  box.id = "do-" + t.id;
+
+  const label = document.createElement("label");
+  label.htmlFor = box.id;
+  label.textContent = t.name;
+
+  li.append(box, label);
+  box.addEventListener("change", () => done(t.id, li));
+  return li;
+}
+
+function done(id, li) {
+  api(`/tasks/${id}/done`, { method: "POST" });
+  li.classList.add("leaving");
+  li.addEventListener("animationend", () => li.remove(), { once: true });
+}
+
 loadShoppingList();
+loadTodoList();

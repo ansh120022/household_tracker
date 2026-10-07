@@ -22,11 +22,11 @@
         <ul id="library"></ul>
       </section>
       <section id="tasks" hidden>
-        <p>Coming soon.</p>
+        <ul id="task-library"></ul>
       </section>
     </main>
 
-    <button id="add" aria-label="Add consumable">+</button>
+    <button id="add" aria-label="Add">+</button>
 
     <dialog id="sheet">
       <form method="dialog">
@@ -62,6 +62,41 @@
       </form>
     </dialog>
 
+    <dialog id="task-sheet">
+      <form method="dialog">
+        <h2>New task</h2>
+
+        <label>
+          Name
+          <input name="name" type="text" required />
+        </label>
+
+        <label>
+          How often
+          <select name="period">
+            <option value="weekly">weekly</option>
+            <option value="biweekly">biweekly</option>
+            <option value="monthly">monthly</option>
+          </select>
+        </label>
+
+        <label>
+          Difficulty
+          <select name="difficulty">
+            <option value="light">light</option>
+            <option value="medium" selected>medium</option>
+            <option value="heavy">heavy</option>
+          </select>
+        </label>
+
+        <div class="actions">
+          <button value="cancel" formnovalidate>Cancel</button>
+          <button value="save" class="primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="household.js"></script>
     <script src="settings.js"></script>
   </body>
 </html>
