@@ -2,9 +2,9 @@
 
 A small shared tracker for a home: what to buy and what to do.
 
-- **Consumables** (milk, dish soap, …) have a status you set by hand: full, coming
-  to an end, or finished. Anything coming to an end or finished shows up on the
-  **To buy** list. Ticking it there sets it back to full.
+- **Consumables** (milk, dish soap, …) have a status you set by hand: full, running
+  low, or finished. Anything running low or finished shows up on the **To buy**
+  list. Ticking it there sets it back to full.
 - **Tasks** (vacuuming, changing bed sheets, …) have a regularity: weekly, every two
   weeks, or monthly. A task shows up on the **To do** list when it hasn't been done
   within that period, or has never been done. Ticking it marks it done today.
@@ -20,7 +20,7 @@ accounts — the code is the only key, so share it only with people in your hous
 - **Frontend:** plain HTML, CSS and JavaScript, no build step. FastAPI serves it from
   the same server.
 
-Free to use at https://212-192-2-109.sslip.io/ — no registration required.
+Free to use at https://household-manager.duckdns.org/ — no registration required.
 
 ## How to use
 
@@ -35,7 +35,7 @@ back.
 
 ### To buy
 
-Shows every consumable that is coming to an end or finished.
+Shows every consumable that is running low or finished.
 
 - Tick an item once you've bought it; it goes back to full and leaves the list.
 - Tap **+** to search all your consumables. Tap one to put it back on the list.
@@ -118,7 +118,7 @@ Allowed values:
 
 - `period`: `weekly`, `biweekly`, `monthly`, `every 2 months` … `every 11 months`,
   `yearly`
-- `status`: `full`, `coming to an end`, `finished`
+- `status`: `full`, `running low`, `finished`
 - `difficulty`: `light`, `medium`, `heavy`
 
 Full request and response schemas are at `/docs` while the server is running.
