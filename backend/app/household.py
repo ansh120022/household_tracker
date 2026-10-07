@@ -1,43 +1,173 @@
 from __future__ import annotations
 
+import random
+import re
+import sqlite3
+import uuid
+from contextlib import contextmanager
 from datetime import date
+from pathlib import Path
 
 from .domain.consumable import Consumable
-from .domain.enums import Status
+from .domain.enums import Difficulty, Period, Status
 from .domain.task import Task
+
+DB_PATH = Path(__file__).resolve().parents[1] / "household.db"
+
+
+@contextmanager
+def _db():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        yield conn
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def _slug(name: str) -> str:
+    name = name.strip().lower().replace(" ", "-").replace("_", "-")
+    return re.sub(r"[^a-z0-9-]", "", name)
 
 
 class Household:
     def __init__(self) -> None:
-        self.consumables: list[Consumable] = []
-        self.tasks: list[Task] = []
+        with _db() as conn:
+            conn.execute(
+                "CREATE TABLE IF NOT EXISTS households ("
+                "id TEXT PRIMARY KEY, code TEXT UNIQUE NOT NULL)"
+            )
+            conn.execute(
+                "CREATE TABLE IF NOT EXISTS consumables ("
+                "id TEXT PRIMARY KEY, household_id TEXT NOT NULL, "
+                "name TEXT NOT NULL, period TEXT NOT NULL, status TEXT NOT NULL)"
+            )
+            conn.execute(
+                "CREATE TABLE IF NOT EXISTS tasks ("
+                "id TEXT PRIMARY KEY, household_id TEXT NOT NULL, "
+                "name TEXT NOT NULL, period TEXT NOT NULL, "
+                "difficulty TEXT NOT NULL, last_done TEXT)"
+            )
 
-    def add_consumable(self, consumable: Consumable) -> Consumable:
-        self.consumables.append(consumable)
+    def create_household(self, name: str) -> str:
+        code = f"{_slug(name)}-{random.randint(100, 999)}"
+        while self.household_id(code) is not None:
+            code = f"{_slug(name)}-{random.randint(100, 999)}"
+        with _db() as conn:
+            conn.execute(
+                "INSERT INTO households (id, code) VALUES (?, ?)",
+                (uuid.uuid4().hex, code),
+            )
+        return code
+
+    def household_id(self, code: str) -> str | None:
+        with _db() as conn:
+            row = conn.execute(
+                "SELECT id FROM households WHERE code = ?", (code,)
+            ).fetchone()
+        return row["id"] if row else None
+
+    def consumables(self, household_id: str) -> list[Consumable]:
+        with _db() as conn:
+            rows = conn.execute(
+                "SELECT * FROM consumables WHERE household_id = ?", (household_id,)
+            ).fetchall()
+        return [_consumable(row) for row in rows]
+
+    def add_consumable(self, household_id: str, consumable: Consumable) -> Consumable:
+        with _db() as conn:
+            conn.execute(
+                "INSERT INTO consumables (id, household_id, name, period, status) "
+                "VALUES (?, ?, ?, ?, ?)",
+                (
+                    consumable.id,
+                    household_id,
+                    consumable.name,
+                    consumable.period.value,
+                    consumable.status.value,
+                ),
+            )
         return consumable
 
-    def add_task(self, task: Task) -> Task:
-        self.tasks.append(task)
+    def consumable(self, household_id: str, id: str) -> Consumable | None:
+        with _db() as conn:
+            row = conn.execute(
+                "SELECT * FROM consumables WHERE household_id = ? AND id = ?",
+                (household_id, id),
+            ).fetchone()
+        return _consumable(row) if row else None
+
+    def set_status(self, household_id: str, id: str, status: Status) -> None:
+        with _db() as conn:
+            conn.execute(
+                "UPDATE consumables SET status = ? WHERE household_id = ? AND id = ?",
+                (status.value, household_id, id),
+            )
+
+    def add_task(self, household_id: str, task: Task) -> Task:
+        with _db() as conn:
+            conn.execute(
+                "INSERT INTO tasks "
+                "(id, household_id, name, period, difficulty, last_done) "
+                "VALUES (?, ?, ?, ?, ?, ?)",
+                (
+                    task.id,
+                    household_id,
+                    task.name,
+                    task.period.value,
+                    task.difficulty.value,
+                    task.last_done.isoformat() if task.last_done else None,
+                ),
+            )
         return task
 
-    def consumable(self, id: str) -> Consumable | None:
-        return next((c for c in self.consumables if c.id == id), None)
+    def task(self, household_id: str, id: str) -> Task | None:
+        with _db() as conn:
+            row = conn.execute(
+                "SELECT * FROM tasks WHERE household_id = ? AND id = ?",
+                (household_id, id),
+            ).fetchone()
+        return _task(row) if row else None
 
-    def task(self, id: str) -> Task | None:
-        return next((t for t in self.tasks if t.id == id), None)
+    def tasks(self, household_id: str) -> list[Task]:
+        with _db() as conn:
+            rows = conn.execute(
+                "SELECT * FROM tasks WHERE household_id = ?", (household_id,)
+            ).fetchall()
+        return [_task(row) for row in rows]
 
-    def shopping_list(self) -> list[Consumable]:
-        return [c for c in self.consumables if c.needs_restock]
+    def todo_list(self, household_id: str, today: date | None = None) -> list[Task]:
+        return [t for t in self.tasks(household_id) if t.is_due(today)]
 
-    def todo_list(self, today: date | None = None) -> list[Task]:
-        return [t for t in self.tasks if t.is_due(today)]
+    def complete_task(
+        self, household_id: str, id: str, on: date | None = None
+    ) -> None:
+        task = self.task(household_id, id)
+        if task is None:
+            return
+        task.mark_done(on)
+        with _db() as conn:
+            conn.execute(
+                "UPDATE tasks SET last_done = ? WHERE household_id = ? AND id = ?",
+                (task.last_done.isoformat(), household_id, id),
+            )
 
-    def set_status(self, id: str, status: Status) -> None:
-        consumable = self.consumable(id)
-        if consumable is not None:
-            consumable.status = status
 
-    def complete_task(self, id: str, on: date | None = None) -> None:
-        task = self.task(id)
-        if task is not None:
-            task.mark_done(on)
+def _consumable(row: sqlite3.Row) -> Consumable:
+    return Consumable(
+        name=row["name"],
+        period=Period(row["period"]),
+        status=Status(row["status"]),
+        id=row["id"],
+    )
+
+
+def _task(row: sqlite3.Row) -> Task:
+    return Task(
+        name=row["name"],
+        period=Period(row["period"]),
+        difficulty=Difficulty(row["difficulty"]),
+        last_done=date.fromisoformat(row["last_done"]) if row["last_done"] else None,
+        id=row["id"],
+    )

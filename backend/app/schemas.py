@@ -9,6 +9,18 @@ from .domain.enums import Difficulty, Period, Status
 from .domain.task import Task
 
 
+class HouseholdCreate(BaseModel):
+    name: str
+
+
+class HouseholdJoin(BaseModel):
+    code: str
+
+
+class HouseholdRead(BaseModel):
+    code: str
+
+
 class ConsumableCreate(BaseModel):
     name: str
     period: Period
