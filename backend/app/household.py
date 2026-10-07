@@ -114,6 +114,16 @@ class Household:
             ).fetchone()
         return _consumable(row) if row else None
 
+    def update_consumable(
+        self, household_id: str, id: str, name: str, period: Period, status: Status
+    ) -> None:
+        with _db() as conn:
+            conn.execute(
+                "UPDATE consumables SET name = ?, period = ?, status = ? "
+                "WHERE household_id = ? AND id = ?",
+                (name, period.value, status.value, household_id, id),
+            )
+
     def set_status(self, household_id: str, id: str, status: Status) -> None:
         with _db() as conn:
             conn.execute(

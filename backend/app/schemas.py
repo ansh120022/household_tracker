@@ -27,6 +27,12 @@ class ConsumableCreate(BaseModel):
     status: Status = Status.FULL
 
 
+class ConsumableUpdate(BaseModel):
+    name: str
+    period: Period
+    status: Status
+
+
 class TaskCreate(BaseModel):
     name: str
     period: Period

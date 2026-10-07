@@ -72,7 +72,10 @@ frontend/
 | POST   | `/consumables`              | add a consumable                          |
 | GET    | `/consumables`              | list the household's consumables          |
 | GET    | `/consumables/{id}`         | get one consumable                        |
+| PUT    | `/consumables/{id}`         | change a consumable's name, period, status |
+| DELETE | `/consumables/{id}`         | delete a consumable and its photo         |
 | PUT    | `/consumables/{id}/status`  | set a consumable's status by hand         |
+| PUT    | `/consumables/{id}/image`   | set a consumable's photo (JPEG, max 2 MB) |
 | POST   | `/tasks`                    | add a task                                |
 | GET    | `/tasks`                    | list the household's tasks                |
 | POST   | `/tasks/{id}/done`          | mark a task done today                    |
@@ -82,7 +85,8 @@ with the household's code. A missing header returns 422, an unknown code returns
 
 Allowed values:
 
-- `period`: `weekly`, `biweekly`, `monthly`
+- `period`: `weekly`, `biweekly`, `monthly`, `every 2 months` … `every 11 months`,
+  `yearly`
 - `status`: `full`, `coming to an end`, `finished`
 - `difficulty`: `light`, `medium`, `heavy`
 

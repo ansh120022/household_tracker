@@ -75,8 +75,6 @@ function openAdd() {
   editingId = null;
   sheetTitle.textContent = "New consumable";
   form.reset();
-  fields.name.readOnly = false;
-  fields.period.disabled = false;
   deleteButton.hidden = true;
   sheet.returnValue = "";
   sheet.showModal();
@@ -84,13 +82,11 @@ function openAdd() {
 
 function openEdit(c) {
   editingId = c.id;
-  sheetTitle.textContent = "Edit status";
+  sheetTitle.textContent = "Edit consumable";
   fields.name.value = c.name;
   fields.period.value = c.period;
   fields.status.value = c.status;
   fields.image.value = "";
-  fields.name.readOnly = true;
-  fields.period.disabled = true;
   deleteButton.hidden = false;
   sheet.returnValue = "";
   sheet.showModal();
@@ -128,10 +124,14 @@ sheet.addEventListener("close", async () => {
     const created = await response.json();
     id = created.id;
   } else {
-    await api(`/consumables/${editingId}/status`, {
+    await api(`/consumables/${editingId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: fields.status.value }),
+      body: JSON.stringify({
+        name: fields.name.value,
+        period: fields.period.value,
+        status: fields.status.value,
+      }),
     });
   }
 

@@ -10,6 +10,7 @@ from .domain.task import Task
 from .household import IMAGES_DIR, Household
 from .schemas import (
     ConsumableCreate,
+    ConsumableUpdate,
     HouseholdCreate,
     HouseholdJoin,
     HouseholdRead,
@@ -63,6 +64,16 @@ def get_consumable(id: str, hid: str = Depends(household_id)):
     if consumable is None:
         raise HTTPException(status_code=404, detail="consumable not found")
     return read_consumable(consumable)
+
+
+@app.put("/consumables/{id}")
+def update_consumable(
+    id: str, body: ConsumableUpdate, hid: str = Depends(household_id)
+):
+    if household.consumable(hid, id) is None:
+        raise HTTPException(status_code=404, detail="consumable not found")
+    household.update_consumable(hid, id, body.name, body.period, body.status)
+    return read_consumable(household.consumable(hid, id))
 
 
 @app.put("/consumables/{id}/status")

@@ -285,12 +285,6 @@ main {
   color: var(--text);
 }
 
-#sheet input:read-only,
-#sheet select:disabled {
-  background: var(--background);
-  color: var(--text-secondary);
-}
-
 #sheet .actions,
 #task-sheet .actions {
   display: flex;
