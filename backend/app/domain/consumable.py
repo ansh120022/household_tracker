@@ -11,9 +11,11 @@ class Consumable(HouseholdItem):
         period: Period,
         status: Status = Status.FULL,
         id: str | None = None,
+        image: str | None = None,
     ) -> None:
         super().__init__(name, period, id)
         self.status = status
+        self.image = image
 
     @property
     def needs_restock(self) -> bool:

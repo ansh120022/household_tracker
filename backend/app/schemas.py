@@ -43,6 +43,7 @@ class ConsumableRead(BaseModel):
     period: Period
     status: Status
     needs_restock: bool
+    image_url: str | None
 
 
 class TaskRead(BaseModel):
@@ -61,6 +62,7 @@ def read_consumable(c: Consumable) -> ConsumableRead:
         period=c.period,
         status=c.status,
         needs_restock=c.needs_restock,
+        image_url=f"/images/{c.image}" if c.image else None,
     )
 
 

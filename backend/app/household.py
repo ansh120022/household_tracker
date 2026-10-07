@@ -13,6 +13,7 @@ from .domain.enums import Difficulty, Period, Status
 from .domain.task import Task
 
 DB_PATH = Path(__file__).resolve().parents[1] / "household.db"
+IMAGES_DIR = Path(__file__).resolve().parents[1] / "images"
 
 # Lowercase letters and digits, without lookalikes like 0/o and 1/l/i.
 CODE_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789"
@@ -41,6 +42,7 @@ def _code(name: str) -> str:
 
 class Household:
     def __init__(self) -> None:
+        IMAGES_DIR.mkdir(exist_ok=True)
         with _db() as conn:
             conn.execute(
                 "CREATE TABLE IF NOT EXISTS households ("
@@ -49,8 +51,14 @@ class Household:
             conn.execute(
                 "CREATE TABLE IF NOT EXISTS consumables ("
                 "id TEXT PRIMARY KEY, household_id TEXT NOT NULL, "
-                "name TEXT NOT NULL, period TEXT NOT NULL, status TEXT NOT NULL)"
+                "name TEXT NOT NULL, period TEXT NOT NULL, status TEXT NOT NULL, "
+                "image TEXT)"
             )
+            columns = [
+                row["name"] for row in conn.execute("PRAGMA table_info(consumables)")
+            ]
+            if "image" not in columns:
+                conn.execute("ALTER TABLE consumables ADD COLUMN image TEXT")
             conn.execute(
                 "CREATE TABLE IF NOT EXISTS tasks ("
                 "id TEXT PRIMARY KEY, household_id TEXT NOT NULL, "
@@ -113,6 +121,20 @@ class Household:
                 (status.value, household_id, id),
             )
 
+    def set_image(self, household_id: str, id: str, data: bytes) -> None:
+        consumable = self.consumable(household_id, id)
+        if consumable is None:
+            return
+        name = f"{uuid.uuid4().hex}.jpg"
+        (IMAGES_DIR / name).write_bytes(data)
+        with _db() as conn:
+            conn.execute(
+                "UPDATE consumables SET image = ? WHERE household_id = ? AND id = ?",
+                (name, household_id, id),
+            )
+        if consumable.image:
+            (IMAGES_DIR / consumable.image).unlink(missing_ok=True)
+
     def add_task(self, household_id: str, task: Task) -> Task:
         with _db() as conn:
             conn.execute(
@@ -165,6 +187,7 @@ def _consumable(row: sqlite3.Row) -> Consumable:
         period=Period(row["period"]),
         status=Status(row["status"]),
         id=row["id"],
+        image=row["image"],
     )
 
 
