@@ -21,6 +21,13 @@ function showTab(name) {
   }
 }
 
+const codeDisplay = document.querySelector("#household-code");
+codeDisplay.textContent = householdCode();
+
+document.querySelector("#copy-code").addEventListener("click", () => {
+  navigator.clipboard.writeText(codeDisplay.textContent);
+});
+
 const library = document.querySelector("#library");
 const sheet = document.querySelector("#sheet");
 const form = sheet.querySelector("form");
