@@ -24,7 +24,9 @@ Free to use at https://212-192-2-109.sslip.io/ — no registration required.
 
 To use it on your phone, open it in Chrome and select "Install" from the Chrome menu. You can then open it like a regular mobile app using your app drawer or by searching for "Household" on your phone.
 
-Or you can install the app on your own host.
+No personal data requested. 
+
+You can also deploy the app on your own host.
 
 ## Run locally
 
