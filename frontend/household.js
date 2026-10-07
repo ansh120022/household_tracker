@@ -19,3 +19,7 @@ function api(path, options = {}) {
     },
   });
 }
+
+function inviteLink() {
+  return `${location.origin}/welcome.html?code=${encodeURIComponent(householdCode())}`;
+}

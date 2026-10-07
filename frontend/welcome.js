@@ -3,7 +3,6 @@ const joinForm = document.querySelector("#join-form");
 const joinError = document.querySelector("#join-error");
 const start = document.querySelector("#start");
 const result = document.querySelector("#result");
-const codeDisplay = document.querySelector("#code-display");
 
 createForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -16,28 +15,38 @@ createForm.addEventListener("submit", async (event) => {
   enter(household.code);
 });
 
-joinForm.addEventListener("submit", async (event) => {
+joinForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  join(joinForm.elements.code.value);
+});
+
+async function join(code) {
   const response = await fetch("/households/join", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code: joinForm.elements.code.value }),
+    body: JSON.stringify({ code }),
   });
   if (!response.ok) {
+    joinForm.elements.code.value = code;
     joinError.hidden = false;
     return;
   }
   const household = await response.json();
-  enter(household.code);
-});
+  localStorage.setItem(HOUSEHOLD_KEY, household.code);
+  location.href = "index.html";
+}
 
 function enter(code) {
   localStorage.setItem(HOUSEHOLD_KEY, code);
-  codeDisplay.textContent = code;
   start.hidden = true;
   result.hidden = false;
 }
 
 document.querySelector("#copy").addEventListener("click", () => {
-  navigator.clipboard.writeText(codeDisplay.textContent);
+  navigator.clipboard.writeText(inviteLink());
 });
+
+const invitedCode = new URLSearchParams(location.search).get("code");
+if (invitedCode) {
+  join(invitedCode);
+}

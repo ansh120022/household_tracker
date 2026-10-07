@@ -41,7 +41,15 @@ function row(c) {
   label.htmlFor = box.id;
   label.textContent = c.name;
 
-  li.append(box, label);
+  li.append(box);
+  if (c.image_url) {
+    const img = document.createElement("img");
+    img.src = c.image_url;
+    img.alt = "";
+    img.className = "thumb";
+    li.append(img);
+  }
+  li.append(label);
   box.addEventListener("change", () => check(c.id, li));
   return li;
 }
