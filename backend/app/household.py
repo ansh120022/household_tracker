@@ -137,9 +137,6 @@ class Household:
             ).fetchall()
         return [_task(row) for row in rows]
 
-    def todo_list(self, household_id: str, today: date | None = None) -> list[Task]:
-        return [t for t in self.tasks(household_id) if t.is_due(today)]
-
     def complete_task(
         self, household_id: str, id: str, on: date | None = None
     ) -> None:
