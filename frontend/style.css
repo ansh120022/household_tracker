@@ -280,6 +280,11 @@ main {
   cursor: pointer;
 }
 
+#sheet #delete {
+  margin-right: auto;
+  color: var(--danger);
+}
+
 #sheet .actions .primary,
 #task-sheet .actions .primary {
   background: var(--green);

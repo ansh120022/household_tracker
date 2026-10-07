@@ -135,6 +135,18 @@ class Household:
         if consumable.image:
             (IMAGES_DIR / consumable.image).unlink(missing_ok=True)
 
+    def delete_consumable(self, household_id: str, id: str) -> None:
+        consumable = self.consumable(household_id, id)
+        if consumable is None:
+            return
+        with _db() as conn:
+            conn.execute(
+                "DELETE FROM consumables WHERE household_id = ? AND id = ?",
+                (household_id, id),
+            )
+        if consumable.image:
+            (IMAGES_DIR / consumable.image).unlink(missing_ok=True)
+
     def add_task(self, household_id: str, task: Task) -> Task:
         with _db() as conn:
             conn.execute(

@@ -36,6 +36,7 @@ const sheet = document.querySelector("#sheet");
 const form = sheet.querySelector("form");
 const fields = form.elements;
 const sheetTitle = document.querySelector("#sheet-title");
+const deleteButton = document.querySelector("#delete");
 let editingId = null;
 
 async function loadConsumables() {
@@ -77,6 +78,7 @@ function openAdd() {
   form.reset();
   fields.name.readOnly = false;
   fields.period.disabled = false;
+  deleteButton.hidden = true;
   sheet.returnValue = "";
   sheet.showModal();
 }
@@ -90,6 +92,7 @@ function openEdit(c) {
   fields.image.value = "";
   fields.name.readOnly = true;
   fields.period.disabled = true;
+  deleteButton.hidden = false;
   sheet.returnValue = "";
   sheet.showModal();
 }
@@ -103,6 +106,13 @@ document.querySelector("#add").addEventListener("click", () => {
 });
 
 sheet.addEventListener("close", async () => {
+  if (sheet.returnValue === "delete") {
+    if (confirm(`Delete ${fields.name.value}? This can't be undone.`)) {
+      await api(`/consumables/${editingId}`, { method: "DELETE" });
+      loadConsumables();
+    }
+    return;
+  }
   if (sheet.returnValue !== "save") return;
 
   let id = editingId;

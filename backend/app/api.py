@@ -75,6 +75,13 @@ def set_consumable_status(
     return read_consumable(household.consumable(hid, id))
 
 
+@app.delete("/consumables/{id}", status_code=204)
+def delete_consumable(id: str, hid: str = Depends(household_id)):
+    if household.consumable(hid, id) is None:
+        raise HTTPException(status_code=404, detail="consumable not found")
+    household.delete_consumable(hid, id)
+
+
 @app.put(
     "/consumables/{id}/image",
     openapi_extra={
