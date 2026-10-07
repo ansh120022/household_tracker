@@ -42,9 +42,8 @@ function enter(code) {
   result.hidden = false;
 }
 
-document.querySelector("#copy").addEventListener("click", () => {
-  navigator.clipboard.writeText(inviteLink());
-});
+const shareButton = document.querySelector("#share-link");
+shareButton.addEventListener("click", () => shareInviteLink(shareButton));
 
 const invitedCode = new URLSearchParams(location.search).get("code");
 if (invitedCode) {

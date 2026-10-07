@@ -21,9 +21,8 @@ function showTab(name) {
   }
 }
 
-document.querySelector("#copy-link").addEventListener("click", () => {
-  navigator.clipboard.writeText(inviteLink());
-});
+const shareButton = document.querySelector("#share-link");
+shareButton.addEventListener("click", () => shareInviteLink(shareButton));
 
 document.querySelector("#logout").addEventListener("click", () => {
   if (!confirm("Log out? You'll need an invite link to come back.")) return;

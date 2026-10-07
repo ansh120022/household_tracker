@@ -92,7 +92,7 @@ header.centered h1 {
   padding: 0 16px 12px;
 }
 
-#copy-link {
+#household #share-link {
   width: 100%;
   font: inherit;
   font-weight: 600;
@@ -425,7 +425,7 @@ main {
 }
 
 .welcome .secondary,
-.welcome #copy {
+.welcome #share-link {
   background: var(--surface);
   color: var(--accent);
 }
