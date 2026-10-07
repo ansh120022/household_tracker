@@ -60,6 +60,10 @@ class Household:
             if "image" not in columns:
                 conn.execute("ALTER TABLE consumables ADD COLUMN image TEXT")
             conn.execute(
+                "UPDATE consumables SET status = ? WHERE status = ?",
+                (Status.LOW.value, "coming to an end"),
+            )
+            conn.execute(
                 "CREATE TABLE IF NOT EXISTS tasks ("
                 "id TEXT PRIMARY KEY, household_id TEXT NOT NULL, "
                 "name TEXT NOT NULL, period TEXT NOT NULL, "

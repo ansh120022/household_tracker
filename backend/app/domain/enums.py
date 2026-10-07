@@ -59,7 +59,7 @@ class Period(Enum):
 
 class Status(Enum):
     FULL = "full"
-    LOW = "coming to an end"
+    LOW = "running low"
     EMPTY = "finished"
 
 

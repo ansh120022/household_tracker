@@ -224,7 +224,8 @@ main {
 }
 
 #sheet,
-#task-sheet {
+#task-sheet,
+#picker {
   width: 100%;
   max-width: 500px;
   margin: auto auto 0;
@@ -235,7 +236,8 @@ main {
 }
 
 #sheet[open],
-#task-sheet[open] {
+#task-sheet[open],
+#picker[open] {
   animation: slide-up 0.25s ease;
 }
 
@@ -246,7 +248,8 @@ main {
 }
 
 #sheet::backdrop,
-#task-sheet::backdrop {
+#task-sheet::backdrop,
+#picker::backdrop {
   background: rgba(0, 0, 0, 0.4);
 }
 
@@ -258,7 +261,8 @@ main {
 }
 
 #sheet h2,
-#task-sheet h2 {
+#task-sheet h2,
+#picker h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
@@ -312,6 +316,63 @@ main {
 #task-sheet .actions .primary {
   background: var(--accent);
   color: var(--on-accent);
+}
+
+#picker[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 85dvh;
+}
+
+.picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#search {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+#picker-list {
+  list-style: none;
+  overflow-y: auto;
+}
+
+#picker-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+#picker-list .name {
+  margin-right: auto;
+}
+
+#picker-list .on-list {
+  cursor: default;
+  opacity: 0.5;
+}
+
+#picker-list .tag {
+  font-size: 13px;
+}
+
+#picker-list .plus {
+  font-size: 22px;
+  color: var(--accent);
+}
+
+#picker-list .new {
+  font-weight: 600;
+  color: var(--accent);
 }
 
 #add {
