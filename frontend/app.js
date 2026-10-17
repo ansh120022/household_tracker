@@ -67,11 +67,29 @@ function check(id, li) {
 }
 
 const todo = document.querySelector("#todo");
+const filters = document.querySelectorAll(".filters button");
+let difficulty = "all";
+
+for (const filter of filters) {
+  filter.addEventListener("click", () => showDifficulty(filter.dataset.difficulty));
+}
+
+function showDifficulty(name) {
+  difficulty = name;
+  for (const filter of filters) {
+    const selected = filter.dataset.difficulty === name;
+    filter.classList.toggle("active", selected);
+    filter.setAttribute("aria-pressed", selected);
+  }
+  loadTodoList();
+}
 
 async function loadTodoList() {
   const response = await api("/tasks");
   const tasks = await response.json();
-  const due = tasks.filter((t) => t.is_due);
+  const due = tasks.filter(
+    (t) => t.is_due && (difficulty === "all" || t.difficulty === difficulty)
+  );
   todo.replaceChildren(...due.map(todoRow));
 }
 
