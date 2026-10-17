@@ -133,6 +133,29 @@ main {
   padding: 8px 0;
 }
 
+.filters {
+  display: flex;
+  gap: 8px;
+  margin: 8px 12px 0;
+}
+
+.filters button {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.filters button.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
 #list,
 #todo {
   list-style: none;
