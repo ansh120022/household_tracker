@@ -542,6 +542,62 @@
           }
         }
       }
+    },
+    "/tasks/{id}/last_done": {
+      "put": {
+        "summary": "Set Task Last Done",
+        "operationId": "set_task_last_done_tasks__id__last_done_put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Id"
+            }
+          },
+          {
+            "name": "x-household-code",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "X-Household-Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LastDoneUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -648,6 +704,27 @@
           "code"
         ],
         "title": "HouseholdRead"
+      },
+      "LastDoneUpdate": {
+        "properties": {
+          "last_done": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Done"
+          }
+        },
+        "type": "object",
+        "required": [
+          "last_done"
+        ],
+        "title": "LastDoneUpdate"
       },
       "Period": {
         "type": "string",

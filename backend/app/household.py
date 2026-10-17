@@ -206,6 +206,19 @@ class Household:
                 (task.last_done.isoformat(), household_id, id),
             )
 
+    def set_last_done(
+        self, household_id: str, id: str, last_done: date | None
+    ) -> None:
+        with _db() as conn:
+            conn.execute(
+                "UPDATE tasks SET last_done = ? WHERE household_id = ? AND id = ?",
+                (
+                    last_done.isoformat() if last_done else None,
+                    household_id,
+                    id,
+                ),
+            )
+
     def update_task(
         self,
         household_id: str,

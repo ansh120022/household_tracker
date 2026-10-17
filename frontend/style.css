@@ -413,6 +413,38 @@ main {
   cursor: pointer;
 }
 
+#toast {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 12px;
+  background: var(--text);
+  color: var(--on-accent);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+#toast[hidden] {
+  display: none;
+}
+
+#undo {
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent-light);
+  cursor: pointer;
+}
+
 .welcome {
   display: flex;
   flex-direction: column;
