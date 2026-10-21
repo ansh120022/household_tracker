@@ -14,6 +14,7 @@ from .schemas import (
     HouseholdCreate,
     HouseholdJoin,
     HouseholdRead,
+    LastDoneUpdate,
     StatusUpdate,
     TaskCreate,
     read_consumable,
@@ -137,6 +138,16 @@ def complete_task(id: str, hid: str = Depends(household_id)):
     if household.task(hid, id) is None:
         raise HTTPException(status_code=404, detail="task not found")
     household.complete_task(hid, id)
+    return read_task(household.task(hid, id))
+
+
+@app.put("/tasks/{id}/last_done")
+def set_task_last_done(
+    id: str, body: LastDoneUpdate, hid: str = Depends(household_id)
+):
+    if household.task(hid, id) is None:
+        raise HTTPException(status_code=404, detail="task not found")
+    household.set_last_done(hid, id, body.last_done)
     return read_task(household.task(hid, id))
 
 

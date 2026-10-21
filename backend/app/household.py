@@ -206,6 +206,41 @@ class Household:
                 (task.last_done.isoformat(), household_id, id),
             )
 
+    def set_last_done(
+        self, household_id: str, id: str, last_done: date | None
+    ) -> None:
+        with _db() as conn:
+            conn.execute(
+                "UPDATE tasks SET last_done = ? WHERE household_id = ? AND id = ?",
+                (
+                    last_done.isoformat() if last_done else None,
+                    household_id,
+                    id,
+                ),
+            )
+
+    def update_task(
+        self,
+        household_id: str,
+        id: str,
+        name: str,
+        period: Period,
+        difficulty: Difficulty,
+    ) -> None:
+        with _db() as conn:
+            conn.execute(
+                "UPDATE tasks SET name = ?, period = ?, difficulty = ? "
+                "WHERE household_id = ? AND id = ?",
+                (name, period.value, difficulty.value, household_id, id),
+            )
+
+    def delete_task(self, household_id: str, id: str) -> None:
+        with _db() as conn:
+            conn.execute(
+                "DELETE FROM tasks WHERE household_id = ? AND id = ?",
+                (household_id, id),
+            )
+
 
 def _consumable(row: sqlite3.Row) -> Consumable:
     return Consumable(

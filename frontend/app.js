@@ -67,11 +67,29 @@ function check(id, li) {
 }
 
 const todo = document.querySelector("#todo");
+const filters = document.querySelectorAll(".filters button");
+let difficulty = "all";
+
+for (const filter of filters) {
+  filter.addEventListener("click", () => showDifficulty(filter.dataset.difficulty));
+}
+
+function showDifficulty(name) {
+  difficulty = name;
+  for (const filter of filters) {
+    const selected = filter.dataset.difficulty === name;
+    filter.classList.toggle("active", selected);
+    filter.setAttribute("aria-pressed", selected);
+  }
+  loadTodoList();
+}
 
 async function loadTodoList() {
   const response = await api("/tasks");
   const tasks = await response.json();
-  const due = tasks.filter((t) => t.is_due);
+  const due = tasks.filter(
+    (t) => t.is_due && (difficulty === "all" || t.difficulty === difficulty)
+  );
   todo.replaceChildren(...due.map(todoRow));
 }
 
@@ -87,15 +105,50 @@ function todoRow(t) {
   label.textContent = t.name;
 
   li.append(box, label);
-  box.addEventListener("change", () => done(t.id, li));
+  box.addEventListener("change", () => done(t, li));
   return li;
 }
 
-function done(id, li) {
-  api(`/tasks/${id}/done`, { method: "POST" });
+function done(t, li) {
+  const request = api(`/tasks/${t.id}/done`, { method: "POST" });
   li.classList.add("leaving");
   li.addEventListener("animationend", () => li.remove(), { once: true });
+  showUndo(t, request);
 }
+
+const toast = document.querySelector("#toast");
+const toastText = document.querySelector("#toast-text");
+const UNDO_MS = 3000;
+let undoTimer = null;
+let undoTask = null;
+let undoRequest = null;
+
+function showUndo(t, request) {
+  undoTask = t;
+  undoRequest = request;
+  toastText.textContent = `${t.name} done`;
+  toast.hidden = false;
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(hideUndo, UNDO_MS);
+}
+
+function hideUndo() {
+  clearTimeout(undoTimer);
+  toast.hidden = true;
+}
+
+document.querySelector("#undo").addEventListener("click", async () => {
+  const t = undoTask;
+  const request = undoRequest;
+  hideUndo();
+  await request;
+  await api(`/tasks/${t.id}/last_done`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ last_done: t.last_done }),
+  });
+  loadTodoList();
+});
 
 const addButton = document.querySelector("#add");
 const picker = document.querySelector("#picker");

@@ -43,6 +43,10 @@ class StatusUpdate(BaseModel):
     status: Status
 
 
+class LastDoneUpdate(BaseModel):
+    last_done: date | None
+
+
 class ConsumableRead(BaseModel):
     id: str
     name: str

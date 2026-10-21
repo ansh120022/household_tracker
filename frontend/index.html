@@ -33,11 +33,22 @@
         <ul id="list"></ul>
       </section>
       <section id="to-do" hidden>
+        <div class="filters">
+          <button data-difficulty="all" class="active" aria-pressed="true">All</button>
+          <button data-difficulty="light" aria-pressed="false">Light</button>
+          <button data-difficulty="medium" aria-pressed="false">Medium</button>
+          <button data-difficulty="heavy" aria-pressed="false">Heavy</button>
+        </div>
         <ul id="todo"></ul>
       </section>
     </main>
 
     <button id="add" aria-label="Add to list">+</button>
+
+    <div id="toast" hidden>
+      <span id="toast-text"></span>
+      <button id="undo">Undo</button>
+    </div>
 
     <dialog id="picker">
       <div class="picker-head">
